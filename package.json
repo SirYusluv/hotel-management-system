@@ -1,0 +1,24 @@
+{
+  "name": "hotel-management-system",
+  "version": "1.0.0",
+  "description": "Daniel and Mathias final year project.",
+  "main": "index.ts",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development nodemon ./dist/index.js",
+    "tsw": "tsc --watch"
+  },
+  "author": "Olanrewaju Yusuf",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.21"
+  }
+}

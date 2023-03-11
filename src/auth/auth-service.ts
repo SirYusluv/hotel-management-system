@@ -1,5 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { createUser } from "../user/user-service";
+import {
+  createUser,
+  findUserWithEmail,
+  IResetEmail,
+  sendPasswordResetMail,
+  signinUser,
+} from "../user/user-service";
+import * as bcrypt from "bcrypt";
+import { EMAIL_PATTERN } from "../util/data";
 
 export async function signup(req: Request, res: Response, next: NextFunction) {
   try {
@@ -30,10 +38,60 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export function login(req: Request, res: Response, next: NextFunction) {}
+export async function login(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { emailAddress, password } = req.body;
+    const user = await findUserWithEmail(emailAddress);
+    if (!user)
+      return res.status(400).json({
+        message: "Invalid email address or password provided.",
+        status: 400,
+      });
+
+    if (!(await bcrypt.compare(password, user.password)))
+      return res.status(400).json({
+        message: "Invalid email address or password provided.",
+        status: 400,
+      });
+
+    res.status(200).json(signinUser(user.toObject()));
+  } catch (err: any) {
+    next(err);
+  }
+}
 
 export function forgetPassword(
   req: Request,
   res: Response,
   next: NextFunction
-) {}
+) {
+  try {
+    const { email: emailAddress } = req.params;
+    if (!emailAddress.match(EMAIL_PATTERN))
+      return res
+        .status(400)
+        .json({ message: "Invalid data provided.", status: 400 });
+
+    sendPasswordResetMail(
+      emailAddress,
+      req.headers.location || "http://localhost:3000/"
+    );
+
+    res.status(200).json({
+      message:
+        "A password reset mail has been sent to the provided email address.",
+      status: 200,
+    });
+  } catch (err: any) {
+    next(err);
+  }
+}
+
+export function resetPassword(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { token } = req.params;
+    const resetToken: IResetEmail = decodeResetEmail();
+  } catch (err: any) {
+    next(err);
+  }
+}

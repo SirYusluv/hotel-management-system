@@ -9,4 +9,4 @@ AuthRouter.post("/signin", login);
 
 AuthRouter.get("/forget-password/:email", forgetPassword);
 
-AuthRouter.get("/reset-password/:token", resetPassword);
+AuthRouter.post("/reset-password/:token", resetPassword);

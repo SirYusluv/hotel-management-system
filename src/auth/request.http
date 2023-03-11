@@ -1,4 +1,4 @@
-# signup
+### signup
 POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
@@ -7,4 +7,24 @@ Content-Type: application/json
     "lastName": "Olanrewaju",
     "emailAddress": "olanrewaju@gmail.com",
     "password": "1234567"
+}
+
+### signin
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+    "emailAddress": "olanrewaju@gmail.com",
+    "password": "01234567"
+}
+
+### forget password
+GET http://localhost:3000/auth//forget-password/olanrewaju@gmail.com
+
+### reset password
+POST http://localhost:3000/auth//reset-password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsImlhdCI6MTY3ODU2NjcxOX0.tPVb7rzR8OoSooVnv_1_dcdrUeAbXl0cx3_9ONJ0O00
+Content-Type: application/json
+
+{
+    "password": "01234567"
 }

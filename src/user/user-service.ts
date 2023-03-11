@@ -2,7 +2,7 @@ import { EMAIL_PATTERN } from "../util/data";
 import { IUser, User } from "./user-schema";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
-import { Types } from "mongoose";
+import { HydratedDocument, Types } from "mongoose";
 
 export interface IJwtPayload {
   emailAddress: string;
@@ -10,7 +10,7 @@ export interface IJwtPayload {
   [key: string]: string;
 }
 
-export interface IResetEmail {
+export interface IResetPassword {
   emailAddress: string;
 }
 
@@ -54,9 +54,7 @@ export async function findUserWithEmail(emailAddress: string) {
   }
 }
 
-export async function signinUser(
-  userWithPassword: IUser & { _id: Types.ObjectId }
-) {
+export function signinUser(userWithPassword: IUser & { _id: Types.ObjectId }) {
   const { password: _, ...user } = userWithPassword;
   try {
     const jwtPayload: IJwtPayload = {
@@ -64,9 +62,10 @@ export async function signinUser(
       _id: user._id.toString(),
     };
 
-    return Object.assign(user, {
+    Object.assign(user, {
       accessToken: jwt.sign(jwtPayload, process.env.JWT_SECRET!),
     });
+    return user;
   } catch (err: any) {
     console.log(err);
     throw err;
@@ -74,8 +73,8 @@ export async function signinUser(
 }
 
 export function sendPasswordResetMail(emailAddress: string, homeURL: string) {
-  const emailReset: IResetEmail = { emailAddress };
-  const resetToken = jwt.sign(emailReset, process.env.RESET_EMAIL_SECRET!);
+  const emailReset: IResetPassword = { emailAddress };
+  const resetToken = jwt.sign(emailReset, process.env.RESET_PASSWORD_SECRET!);
 
   if (!homeURL.endsWith("/")) homeURL = homeURL + "/";
 
@@ -84,11 +83,30 @@ export function sendPasswordResetMail(emailAddress: string, homeURL: string) {
   console.log(`${homeURL}auth/reset-password/${resetToken}`);
 }
 
-export function decodeResetEmailToken(token: string) {
+export function decodeResetPasswordToken(token: string) {
   try {
-    const verifiedToken = jwt.verify(token, process.env.RESET_EMAIL_SECRET!);
-    console.log(verifiedToken);
+    const verifiedToken: IResetPassword = jwt.verify(
+      token,
+      process.env.RESET_PASSWORD_SECRET!
+    ) as IResetPassword;
+    return verifiedToken;
   } catch (err: any) {
     throw new Error("Error verifying token.:::400");
+  }
+}
+
+export async function modifyUserPassword(
+  emailAddress: string,
+  newPassword: string
+) {
+  try {
+    const user = await findUserWithEmail(emailAddress);
+    if (!user) throw new Error("User with the data provided not found.:::400");
+
+    user.password = await bcrypt.hash(newPassword, 12);
+    return user.save();
+  } catch (err: any) {
+    console.log(err);
+    throw new Error("Error modifying user's data.:::400");
   }
 }

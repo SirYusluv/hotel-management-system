@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import {
   createUser,
+  decodeResetPasswordToken,
   findUserWithEmail,
-  IResetEmail,
+  modifyUserPassword,
   sendPasswordResetMail,
   signinUser,
 } from "../user/user-service";
@@ -87,10 +88,38 @@ export function forgetPassword(
   }
 }
 
-export function resetPassword(req: Request, res: Response, next: NextFunction) {
+export async function resetPassword(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
     const { token } = req.params;
-    // const resetToken: IResetEmail = decodeResetEmail();
+    const { password } = req.body;
+    const resetToken = decodeResetPasswordToken(token);
+
+    if (
+      !password ||
+      password.length < 7 ||
+      !resetToken.emailAddress.match(EMAIL_PATTERN)
+    )
+      return res
+        .status(400)
+        .json({ message: "Invalid data provided.", status: 400 });
+
+    const modifiedUser = await modifyUserPassword(
+      resetToken.emailAddress,
+      password
+    );
+
+    if (!modifiedUser)
+      return res.status(200).json({
+        message: "Error modifying user's password. please try again later.",
+        status: 200,
+      });
+    res
+      .status(201)
+      .json({ message: "User password modified successfully.", status: 201 });
   } catch (err: any) {
     next(err);
   }

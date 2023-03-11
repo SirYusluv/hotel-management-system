@@ -90,7 +90,7 @@ export function forgetPassword(
 export function resetPassword(req: Request, res: Response, next: NextFunction) {
   try {
     const { token } = req.params;
-    const resetToken: IResetEmail = decodeResetEmail();
+    // const resetToken: IResetEmail = decodeResetEmail();
   } catch (err: any) {
     next(err);
   }

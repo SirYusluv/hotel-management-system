@@ -28,3 +28,15 @@ Content-Type: application/json
 {
     "password": "01234567"
 }
+
+### contact us
+POST http://localhost:3000/auth/contact-us
+Content-Type: application/json
+
+{
+    "firstName": "Olanrewaju",
+    "lastName": "Yusuf",
+    "phoneNumber": "08023765429",
+    "emailAddress": "anemail@gmail.com",
+    "message": "Beautiful appps"
+}

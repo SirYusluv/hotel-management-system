@@ -1,5 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { decodeBearerToken } from "./user/user-service";
+import { user } from "./user/user-schema";
+import {
+  decodeBearerToken,
+  findUserWithEmail,
+  IJwtPayload,
+} from "./user/user-service";
 
 export async function userGuard(
   req: Request,
@@ -21,6 +26,33 @@ export async function userGuard(
   } catch (err: any) {
     /*INFO: Error that is not known shouldn't be shown to the user since there
     might be some things we don't want users to see expose in such error */
+    console.error(err);
+    next(err);
+  }
+}
+
+export async function adminGuard(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { _user }: { _user: IJwtPayload } = req.body;
+    if (!_user)
+      return res.status(401).json({
+        message: "You are not authorized to access this resource",
+        status: 401,
+      });
+
+    const userData = await findUserWithEmail(_user.emailAddress);
+
+    if (userData?.userType !== user.admin)
+      return res.status(401).json({
+        message: "You are not authorized to access this resource",
+        status: 401,
+      });
+    next();
+  } catch (err: any) {
     console.error(err);
     next(err);
   }

@@ -194,7 +194,7 @@ export async function submitEvaluation(
       firstTime,
       firstName,
       lastName,
-      emailAddress,
+      emailAddress: emailAddress || _user.emailAddress,
       phone,
       frontDeskOfficePerformance,
       staffPerformance,
@@ -210,6 +210,55 @@ export async function submitEvaluation(
       .status(201)
       .json({ message: "Thanks for the evaluation.", status: 201 });
   } catch (err: any) {
+    console.log(err);
+    next(err);
+  }
+}
+
+export async function getEvaluation(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { emailAddress: unConvertedEmail, all: unConvertedAll } = req.query;
+    const emailAddress = unConvertedEmail?.toString();
+    const all = unConvertedAll?.toString();
+
+    const page = Number(req.params.page) || 0;
+
+    if (
+      (emailAddress && !emailAddress.match(EMAIL_PATTERN)) ||
+      (all && !["true", "false"].includes(all))
+    )
+      return res
+        .status(400)
+        .json({ message: "Invalid data provided", status: 400 });
+
+    let evaluations: any[] = [];
+
+    // I'm not converting all to boolean in "if" cause I don't want any truty to work Boolean("any value")
+    if (!emailAddress && (!all || all === "false")) {
+      evaluations = await Evaluation.find().limit(1).skip(page);
+    }
+
+    if (!emailAddress && all === "true") {
+      evaluations = await Evaluation.find().limit(10).skip(page);
+    }
+
+    if (emailAddress && (!all || all === "false")) {
+      evaluations = await Evaluation.find({ emailAddress }).limit(1).skip(page);
+    }
+
+    if (emailAddress && all === "true") {
+      evaluations = await Evaluation.find({ emailAddress })
+        .limit(10)
+        .skip(page);
+    }
+
+    res.status(200).json({ evaluations, status: 200 });
+  } catch (err: any) {
+    console.log(err);
     next(err);
   }
 }

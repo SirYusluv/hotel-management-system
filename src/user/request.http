@@ -9,3 +9,7 @@ Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3Mi
     "firstTime": "no",
     "frontDeskOfficePerformance": 5
 }
+
+### Get evaluation
+GET http://localhost:3000/user/get-evaluation?emailAddress=olanrewaju@gmail.com&all=false
+Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsIl9pZCI6IjY0MDhiMjc1ODYyM2FlYTYwNzI1NTViNyIsImlhdCI6MTY3ODYwNjM5M30.r2IaXyUMoLAzRnN_eHhvahxyW-DlIhh7Leu6RZrnOlo

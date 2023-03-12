@@ -1,6 +1,9 @@
 import { Router } from "express";
-import { submitEvaluation } from "./user-service";
+import { getEvaluation, submitEvaluation } from "./user-service";
 
 export const UserRouter = Router();
 
 UserRouter.post("/evaluation", submitEvaluation);
+
+// can receive query param of emailAddress?, all?: "true" | "false", page?
+UserRouter.get("/get-evaluation", getEvaluation);

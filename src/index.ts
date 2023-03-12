@@ -7,6 +7,7 @@ import express, {
 } from "express";
 import mongoose from "mongoose";
 import { AuthRouter } from "./auth/auth-controller";
+import { userGuard } from "./guard";
 import { RoomRouter } from "./room/room-controller";
 import { UserRouter } from "./user/user-controller";
 dotenv.config({ path: `.env.${process.env.NODE_ENV!}` });
@@ -14,8 +15,8 @@ dotenv.config({ path: `.env.${process.env.NODE_ENV!}` });
 const app = express();
 app.use(express.json());
 app.use("/auth", AuthRouter);
-app.use("/user", UserRouter);
-app.use("/room", RoomRouter);
+app.use("/user", userGuard, UserRouter);
+app.use("/room", userGuard, RoomRouter);
 
 const errorHandler: ErrorRequestHandler = function (
   err: any,

@@ -2,7 +2,9 @@ import { EMAIL_PATTERN } from "../util/data";
 import { IUser, User } from "./user-schema";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
-import { HydratedDocument, Types } from "mongoose";
+import { Types } from "mongoose";
+import { NextFunction, Request, Response } from "express";
+import { Evaluation } from "./evaluation-schema";
 
 export interface IJwtPayload {
   emailAddress: string;
@@ -83,18 +85,6 @@ export function sendPasswordResetMail(emailAddress: string, homeURL: string) {
   console.log(`${homeURL}auth/reset-password/${resetToken}`);
 }
 
-export function decodeResetPasswordToken(token: string) {
-  try {
-    const verifiedToken: IResetPassword = jwt.verify(
-      token,
-      process.env.RESET_PASSWORD_SECRET!
-    ) as IResetPassword;
-    return verifiedToken;
-  } catch (err: any) {
-    throw new Error("Error verifying token.:::400");
-  }
-}
-
 export async function modifyUserPassword(
   emailAddress: string,
   newPassword: string
@@ -108,5 +98,118 @@ export async function modifyUserPassword(
   } catch (err: any) {
     console.log(err);
     throw new Error("Error modifying user's data.:::400");
+  }
+}
+
+export function decodeResetPasswordToken(token: string) {
+  try {
+    const verifiedToken: IResetPassword = jwt.verify(
+      token,
+      process.env.RESET_PASSWORD_SECRET!
+    ) as IResetPassword;
+    return verifiedToken;
+  } catch (err: any) {
+    throw new Error("Error verifying token.:::400");
+  }
+}
+
+export function decodeBearerToken(token: string) {
+  try {
+    const verifiedToken: IJwtPayload = jwt.verify(
+      token,
+      process.env.JWT_SECRET!
+    ) as IJwtPayload;
+    return verifiedToken;
+  } catch (err: any) {
+    throw new Error("Error verifying token.:::400");
+  }
+}
+
+export async function submitEvaluation(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const {
+      checkInDate,
+      checkOutDate,
+      firstTime,
+      firstName,
+      lastName,
+      emailAddress,
+      phone,
+      frontDeskOfficePerformance,
+      staffPerformance,
+      spaPerformance,
+      roomsPerformance,
+      resturantPerformance,
+      fitnessCenterPerformance,
+      overallPerformance,
+    } = req.body;
+    const { _user }: { _user: IJwtPayload } = req.body;
+    const userId = new Types.ObjectId(_user._id);
+
+    const frontDeskOfficePerformanceNum = Number(frontDeskOfficePerformance);
+    const staffPerformanceNum = Number(staffPerformance);
+    const spaPerformanceNum = Number(spaPerformance);
+    const roomsPerformanceNum = Number(roomsPerformance);
+    const resturantPerformanceNum = Number(resturantPerformance);
+    const fitnessCenterPerformanceNum = Number(fitnessCenterPerformance);
+    const overallPerformanceNum = Number(overallPerformance);
+
+    if (!checkInDate || !checkOutDate || !firstTime)
+      return res
+        .status(400)
+        .json({ message: "Incomplete data provided.", status: 400 });
+
+    const performanceIsNotValid = (performance: number) =>
+      performance < 1 || performance > 5;
+
+    if (
+      (firstName && firstName.length < 1) ||
+      (lastName && lastName.length < 1) ||
+      (emailAddress && !emailAddress.match(EMAIL_PATTERN)) ||
+      (phone && phone.length < 10) ||
+      !["yes", "no"].includes(firstTime) ||
+      performanceIsNotValid(frontDeskOfficePerformanceNum) ||
+      performanceIsNotValid(staffPerformanceNum) ||
+      performanceIsNotValid(spaPerformanceNum) ||
+      performanceIsNotValid(roomsPerformanceNum) ||
+      performanceIsNotValid(resturantPerformanceNum) ||
+      performanceIsNotValid(fitnessCenterPerformanceNum) ||
+      performanceIsNotValid(overallPerformanceNum)
+    )
+      return res
+        .status(400)
+        .json({ message: "Incomplete or invalid data provided.", status: 400 });
+
+    const convCheckInDate = new Date(checkInDate); // converted
+    const convCheckOutDate = new Date(checkOutDate);
+
+    const evaluation = new Evaluation({
+      user: userId,
+      checkInDate: convCheckInDate,
+      checkOutDate: convCheckOutDate,
+      firstTime,
+      firstName,
+      lastName,
+      emailAddress,
+      phone,
+      frontDeskOfficePerformance,
+      staffPerformance,
+      spaPerformance,
+      roomsPerformance,
+      resturantPerformance,
+      fitnessCenterPerformance,
+      overallPerformance,
+    });
+    await evaluation.save();
+
+    res
+      .status(201)
+      .json({ message: "Thanks for the evaluation.", status: 201 });
+  } catch (err: any) {
+    next(err);
   }
 }

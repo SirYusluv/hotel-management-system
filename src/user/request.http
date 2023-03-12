@@ -17,3 +17,7 @@ Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3Mi
 ### Get feedbacks
 GET http://localhost:3000/user/contact-us
 Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsIl9pZCI6IjY0MDhiMjc1ODYyM2FlYTYwNzI1NTViNyIsImlhdCI6MTY3ODYwNjM5M30.r2IaXyUMoLAzRnN_eHhvahxyW-DlIhh7Leu6RZrnOlo
+
+### get newsletters
+GET http://localhost:3000/user/newsletter
+Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsIl9pZCI6IjY0MDhiMjc1ODYyM2FlYTYwNzI1NTViNyIsImlhdCI6MTY3ODYwNjM5M30.r2IaXyUMoLAzRnN_eHhvahxyW-DlIhh7Leu6RZrnOlo

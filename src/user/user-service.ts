@@ -6,6 +6,7 @@ import { Types } from "mongoose";
 import { NextFunction, Request, Response } from "express";
 import { Evaluation } from "./evaluation-schema";
 import { ContactUs } from "../auth/contact-us-schema";
+import { NewsLetter } from "../auth/newsleter-schema";
 
 export interface IJwtPayload {
   emailAddress: string;
@@ -271,14 +272,31 @@ export async function getContactUs(
 ) {
   try {
     const page = Number(req.query.page) || 0;
+    res.status(200).json({
+      message: await ContactUs.find().limit(10).skip(page),
+      status: 200,
+    });
+  } catch (err: any) {
+    console.log(err);
+    next(err);
+  }
+}
+
+export async function getNewsLetter(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const page = Number(req.body) || 0;
     res
       .status(200)
       .json({
-        message: await ContactUs.find().limit(10).skip(page),
+        newsletters: await NewsLetter.find().limit(10).skip(page),
         status: 200,
       });
   } catch (err: any) {
-    console.log(err);
+    console.error(err);
     next(err);
   }
 }

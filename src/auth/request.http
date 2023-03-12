@@ -40,3 +40,11 @@ Content-Type: application/json
     "emailAddress": "anemail@gmail.com",
     "message": "Beautiful appps"
 }
+
+### subscribe to newsletter
+POST http://localhost:3000/auth/newsletter
+Content-Type: application/json
+
+{
+    "emailAddress": "anemail@gmail.comm"
+}

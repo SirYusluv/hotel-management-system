@@ -10,6 +10,7 @@ import {
 import * as bcrypt from "bcrypt";
 import { EMAIL_PATTERN } from "../util/data";
 import { ContactUs } from "./contact-us-schema";
+import { NewsLetter } from "./newsleter-schema";
 
 export async function signup(req: Request, res: Response, next: NextFunction) {
   try {
@@ -157,6 +158,36 @@ export async function contactUs(
     res
       .status(201)
       .json({ message: "Thank you for contacting us", status: 200 });
+  } catch (err: any) {
+    console.error(err);
+    next(err);
+  }
+}
+
+export async function addUserToNewsletter(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { emailAddress } = req.body;
+
+    if (!emailAddress || !emailAddress.match(EMAIL_PATTERN))
+      return res
+        .status(400)
+        .json({ message: "Invalid email address provided.", status: 400 });
+
+    if (await NewsLetter.findOne({ emailAddress }))
+      return res
+        .status(200)
+        .json({ message: "User already subscribed", status: 200 });
+
+    await new NewsLetter({ emailAddress }).save();
+
+    res.status(201).json({
+      message: "Thak you for subscribing to our newsletter",
+      status: 201,
+    });
   } catch (err: any) {
     console.error(err);
     next(err);

@@ -9,6 +9,7 @@ import {
 } from "../user/user-service";
 import * as bcrypt from "bcrypt";
 import { EMAIL_PATTERN } from "../util/data";
+import { ContactUs } from "./contact-us-schema";
 
 export async function signup(req: Request, res: Response, next: NextFunction) {
   try {
@@ -121,6 +122,43 @@ export async function resetPassword(
       .status(201)
       .json({ message: "User password modified successfully.", status: 201 });
   } catch (err: any) {
+    next(err);
+  }
+}
+
+export async function contactUs(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { firstName, lastName, phoneNumber, emailAddress, message } =
+      req.body;
+
+    if (
+      !firstName ||
+      !lastName ||
+      !phoneNumber ||
+      phoneNumber.length < 10 ||
+      !emailAddress.match(EMAIL_PATTERN) ||
+      !message
+    )
+      return res
+        .status(400)
+        .json({ message: "Incomplete or invalid data provided", status: 400 });
+
+    await new ContactUs({
+      firstName,
+      lastName,
+      phoneNumber,
+      emailAddress,
+      message,
+    }).save();
+    res
+      .status(201)
+      .json({ message: "Thank you for contacting us", status: 200 });
+  } catch (err: any) {
+    console.error(err);
     next(err);
   }
 }

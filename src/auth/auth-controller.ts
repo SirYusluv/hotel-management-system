@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { forgetPassword, login, resetPassword, signup } from "./auth-service";
+import {
+  contactUs,
+  forgetPassword,
+  login,
+  resetPassword,
+  signup,
+} from "./auth-service";
 
 export const AuthRouter = Router();
 
@@ -10,3 +16,5 @@ AuthRouter.post("/signin", login);
 AuthRouter.get("/forget-password/:email", forgetPassword);
 
 AuthRouter.post("/reset-password/:token", resetPassword);
+
+AuthRouter.post("/contact-us", contactUs);

@@ -17,3 +17,14 @@ Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3Mi
 ### GET rooms
 GET http://localhost:3000/room/rooms?children=1
 Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsIl9pZCI6IjY0MDhiMjc1ODYyM2FlYTYwNzI1NTViNyIsImlhdCI6MTY3ODcwODQ5MH0.-rrNGSay57PmYYuFdFd2rEnybjeh3bewANMlZMbdRK4
+
+### update room
+PATCH http://localhost:3000/room/room
+Content-Type: application/json
+Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsIl9pZCI6IjY0MDhiMjc1ODYyM2FlYTYwNzI1NTViNyIsImlhdCI6MTY3ODcwODQ5MH0.-rrNGSay57PmYYuFdFd2rEnybjeh3bewANMlZMbdRK4
+
+{
+    "roomName": "Ma33tss",
+    "adult": 2,
+    "capacity": 3
+}

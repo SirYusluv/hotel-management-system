@@ -92,3 +92,78 @@ export async function getRooms(
     next(err);
   }
 }
+
+export async function updateRoom(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const {
+      roomType,
+      packageName,
+      roomName,
+      adult: adultStr,
+      children: childrenStr,
+      bed,
+      price: priceStr,
+      capacity: capacityStr,
+      view,
+      services,
+      size: sizeStr,
+    } = req.body;
+
+    const adult = Number(adultStr);
+    const children = Number(childrenStr);
+    const price = Number(priceStr);
+    const capacity = Number(capacityStr);
+    const size = Number(sizeStr);
+
+    if (!roomName)
+      return res
+        .status(400)
+        .json({ message: "Room name nust be provided.", status: 400 });
+
+    if (
+      !roomType &&
+      !packageName &&
+      !adult &&
+      !children &&
+      !bed &&
+      !price &&
+      !capacity &&
+      !view &&
+      !services &&
+      !size
+    )
+      return res
+        .status(400)
+        .json({ message: "Incomplete or invalid data provided.", status: 400 });
+
+    const room = await Room.findOne({ roomName });
+    if (!room)
+      return res.status(400).json({
+        message: `Room with name ${roomName} does not exist.`,
+        status: 400,
+      });
+
+    room.roomType = roomType || room.roomType;
+    room.packageName = packageName || room.packageName;
+    room.adult = adult || room.adult;
+    room.children = children || room.children;
+    room.bed = bed || room.bed;
+    room.price = price || room.price;
+    room.capacity = capacity || room.capacity;
+    room.view = view || room.view;
+    room.services = services || room.services;
+    room.size = size || room.size;
+    room.save();
+
+    res
+      .status(200)
+      .json({ room, message: "Room updated successfully.", status: 201 });
+  } catch (err: any) {
+    console.log(err);
+    next(err);
+  }
+}

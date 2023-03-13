@@ -44,13 +44,39 @@ export async function addRoom(req: Request, res: Response, next: NextFunction) {
       children,
       bed,
       price,
-      capacity,
-      view,
-      services,
-      size,
+      capacity: capacity || null,
+      view: view || null,
+      services: services || null,
+      size: size || null,
     }).save();
 
     res.status(201).json({ message: "Room saved successfully", status: 201 });
+  } catch (err: any) {
+    if (err.code === 11000)
+      return next(Error("Room name is already in use.:::400"));
+
+    console.log(err);
+    next(err);
+  }
+}
+
+export async function getRooms(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const page = Number(req.query.page) || 0;
+    const packageName = req.query.packageName || null;
+    const roomType = req.query.roomType || null;
+    const roomName = req.query.roomName || null;
+
+    res.status(200).json({
+      rooms: await Room.find({ packageName, roomType, roomName })
+        .limit(10)
+        .skip(page),
+      status: 200,
+    });
   } catch (err: any) {
     console.log(err);
     next(err);

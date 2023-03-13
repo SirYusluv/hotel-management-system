@@ -17,7 +17,7 @@ export interface IRoom {
 export const roomSchema = new Schema<IRoom>({
   roomType: { type: String, required: true },
   packageName: { type: String, required: true },
-  roomName: { type: String, required: true },
+  roomName: { type: String, required: true, unique: true },
   adult: { type: Number, required: true },
   children: { type: Number, required: true },
   bed: { type: String, required: true },

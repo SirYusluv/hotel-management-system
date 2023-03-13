@@ -15,7 +15,7 @@ Content-Type: application/json
 
 {
     "emailAddress": "olanrewaju@gmail.com",
-    "password": "01234567"
+    "password": "1234567"
 }
 
 ### forget password

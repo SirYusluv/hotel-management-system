@@ -1,0 +1,19 @@
+### add room
+POST http://localhost:3000/room/add-room
+Content-Type: application/json
+Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsIl9pZCI6IjY0MGVjMTZjOGEyNmI3MTU2ZTMzZmEyOCIsImlhdCI6MTY3ODY5MDk4MX0.CilvSVBSqidMOkjD_lA9bDbahomQDKnwT73M1XV97JU
+
+{
+    "roomType": "Single room",
+    "packageName": "Presidential",
+    "roomName": "athiasssis",
+    "adult": 1,
+    "children": 2,
+    "bed": "1 long bed",
+    "price": 33.45,
+    "capacity": 3
+}
+
+### GET rooms
+GET http://localhost:3000/room/rooms
+Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsIl9pZCI6IjY0MGVjMTZjOGEyNmI3MTU2ZTMzZmEyOCIsImlhdCI6MTY3ODY5MDk4MX0.CilvSVBSqidMOkjD_lA9bDbahomQDKnwT73M1XV97JU

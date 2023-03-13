@@ -246,3 +246,20 @@ export async function removeBookedRoom(
     next(err);
   }
 }
+
+export async function getBookedRooms(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { emailAddress } = req.body._user as IJwtPayload;
+
+    res
+      .status(200)
+      .json({ rooms: await BookRoom.find({ emailAddress }), status: 200 });
+  } catch (err: any) {
+    console.error(err);
+    next(err);
+  }
+}

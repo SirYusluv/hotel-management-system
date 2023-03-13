@@ -41,3 +41,7 @@ Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3Mi
 ### remove room
 DELETE http://localhost:3000/room/remove-room/640f161f7158a4f54e4c8555
 Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsIl9pZCI6IjY0MDhiMjc1ODYyM2FlYTYwNzI1NTViNyIsImlhdCI6MTY3ODcwODQ5MH0.-rrNGSay57PmYYuFdFd2rEnybjeh3bewANMlZMbdRK4
+
+### get booked rooms
+GET http://localhost:3000/room/room
+Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsIl9pZCI6IjY0MDhiMjc1ODYyM2FlYTYwNzI1NTViNyIsImlhdCI6MTY3ODcwODQ5MH0.-rrNGSay57PmYYuFdFd2rEnybjeh3bewANMlZMbdRK4

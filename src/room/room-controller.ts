@@ -6,6 +6,7 @@ import {
   bookRoom,
   getRooms,
   updateRoom,
+  getBookedRooms,
 } from "./room-service";
 
 export const RoomRouter = Router();
@@ -24,3 +25,6 @@ RoomRouter.patch("/room", adminGuard, updateRoom);
 RoomRouter.post("/book-room", bookRoom);
 
 RoomRouter.delete("/remove-room/:roomId", removeBookedRoom);
+
+// query param: page?
+RoomRouter.get("/room", getBookedRooms);

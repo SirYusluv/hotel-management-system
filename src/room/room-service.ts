@@ -70,9 +70,19 @@ export async function getRooms(
     const packageName = req.query.packageName || null;
     const roomType = req.query.roomType || null;
     const roomName = req.query.roomName || null;
+    const adult = Number(req.query.adult) || null;
+    const children = Number(req.query.children) || null;
+    const price = Number(req.query.price) || null;
 
     res.status(200).json({
-      rooms: await Room.find({ packageName, roomType, roomName })
+      rooms: await Room.find({
+        packageName: packageName || { $regex: /.*?/ },
+        roomType: roomType || { $regex: /.*?/ },
+        roomName: roomName || { $regex: /.*?/ },
+        adult: adult || { $gt: -1 },
+        children: children || { $gt: -1 },
+        price: price || { $gt: -1 },
+      })
         .limit(10)
         .skip(page),
       status: 200,

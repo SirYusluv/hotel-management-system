@@ -1,19 +1,19 @@
 ### add room
 POST http://localhost:3000/room/add-room
 Content-Type: application/json
-Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsIl9pZCI6IjY0MGVjMTZjOGEyNmI3MTU2ZTMzZmEyOCIsImlhdCI6MTY3ODY5MDk4MX0.CilvSVBSqidMOkjD_lA9bDbahomQDKnwT73M1XV97JU
+Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsIl9pZCI6IjY0MDhiMjc1ODYyM2FlYTYwNzI1NTViNyIsImlhdCI6MTY3ODcwODQ5MH0.-rrNGSay57PmYYuFdFd2rEnybjeh3bewANMlZMbdRK4
 
 {
     "roomType": "Single room",
-    "packageName": "Presidential",
-    "roomName": "athiasssis",
+    "packageName": "Residential",
+    "roomName": "Ma33tss",
     "adult": 1,
-    "children": 2,
+    "children": 1,
     "bed": "1 long bed",
     "price": 33.45,
-    "capacity": 3
+    "capacity": 2
 }
 
 ### GET rooms
-GET http://localhost:3000/room/rooms
-Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsIl9pZCI6IjY0MGVjMTZjOGEyNmI3MTU2ZTMzZmEyOCIsImlhdCI6MTY3ODY5MDk4MX0.CilvSVBSqidMOkjD_lA9bDbahomQDKnwT73M1XV97JU
+GET http://localhost:3000/room/rooms?children=1
+Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsIl9pZCI6IjY0MDhiMjc1ODYyM2FlYTYwNzI1NTViNyIsImlhdCI6MTY3ODcwODQ5MH0.-rrNGSay57PmYYuFdFd2rEnybjeh3bewANMlZMbdRK4

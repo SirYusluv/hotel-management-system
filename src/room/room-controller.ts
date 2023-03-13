@@ -6,5 +6,5 @@ export const RoomRouter = Router();
 
 RoomRouter.post("/add-room", adminGuard, addRoom);
 
-// can take query param: page, packageName, roomType, roomName
+// can take query param: page, packageName, roomType, roomName, adult, children, price
 RoomRouter.get("/rooms", getRooms);

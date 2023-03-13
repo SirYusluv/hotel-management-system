@@ -22,11 +22,11 @@ Content-Type: application/json
 GET http://localhost:3000/auth//forget-password/olanrewaju@gmail.com
 
 ### reset password
-POST http://localhost:3000/auth//reset-password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsImlhdCI6MTY3ODU2NjcxOX0.tPVb7rzR8OoSooVnv_1_dcdrUeAbXl0cx3_9ONJ0O00
+POST http://localhost:3000/auth//reset-password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsImlhdCI6MTY3ODcwODQyNX0.zr0GEHB7INolbr31cipBeFFW3adM_XcsXLz63IKNUWY
 Content-Type: application/json
 
 {
-    "password": "01234567"
+    "password": "1234567"
 }
 
 ### contact us

@@ -1,4 +1,7 @@
 import { NextFunction, Request, Response } from "express";
+import { Types } from "mongoose";
+import { IJwtPayload } from "../user/user-service";
+import { BookRoom } from "./book-room.schema";
 import { Room } from "./room-schema";
 
 export async function addRoom(req: Request, res: Response, next: NextFunction) {
@@ -66,6 +69,7 @@ export async function getRooms(
   next: NextFunction
 ) {
   try {
+    const roomId = req.query.roomId?.toString() || null;
     const page = Number(req.query.page) || 0;
     const packageName = req.query.packageName || null;
     const roomType = req.query.roomType || null;
@@ -73,6 +77,24 @@ export async function getRooms(
     const adult = Number(req.query.adult) || null;
     const children = Number(req.query.children) || null;
     const price = Number(req.query.price) || null;
+
+    let _id: Types.ObjectId | null = null;
+
+    try {
+      _id = !roomId ? null : new Types.ObjectId(roomId);
+    } catch (_: any) {}
+
+    console.log(!!_id, "  ", roomId, "  ", _id);
+
+    if (_id)
+      return res.status(200).json({
+        rooms: await Room.find({ _id }),
+        status: 200,
+      });
+
+    // user is searching by roomId and not other parameter
+    // since the roomId provided is invalid (_id). returm empty rooms
+    if (roomId) return res.status(200).json({ rooms: [], status: 200 });
 
     res.status(200).json({
       rooms: await Room.find({
@@ -162,6 +184,63 @@ export async function updateRoom(
     res
       .status(200)
       .json({ room, message: "Room updated successfully.", status: 201 });
+  } catch (err: any) {
+    console.error(err);
+    next(err);
+  }
+}
+
+export async function bookRoom(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { roomId: room_id } = req.body;
+    const roomId = room_id && new Types.ObjectId(room_id);
+    if (!roomId || !(await Room.findOne({ _id: roomId })))
+      return res
+        .status(400)
+        .json({ message: "Invalid room id provided.", status: 400 });
+
+    const { _id, emailAddress } = req.body._user as IJwtPayload;
+    await new BookRoom({
+      roomId,
+      userId: new Types.ObjectId(_id),
+      emailAddress,
+    }).save();
+
+    res.status(201).json({ message: "Room booked successfully.", status: 201 });
+  } catch (err: any) {
+    console.error(err);
+    next(err);
+  }
+}
+
+export async function removeBookedRoom(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { roomId } = req.params;
+    if (!roomId)
+      return res
+        .status(400)
+        .json({ message: "Room id must be provided.", status: 400 });
+
+    console.log(roomId);
+
+    const { emailAddress } = req.body._user as IJwtPayload;
+
+    BookRoom.deleteMany({
+      roomId,
+      emailAddress,
+    }).exec();
+
+    res
+      .status(200)
+      .json({ message: "Rooms succesfully removed.", status: 200 });
   } catch (err: any) {
     console.log(err);
     next(err);

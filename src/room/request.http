@@ -6,7 +6,7 @@ Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3Mi
 {
     "roomType": "Single room",
     "packageName": "Residential",
-    "roomName": "Ma33tss",
+    "roomName": "Ma3e3tss",
     "adult": 1,
     "children": 1,
     "bed": "1 long bed",
@@ -15,7 +15,7 @@ Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3Mi
 }
 
 ### GET rooms
-GET http://localhost:3000/room/rooms?children=1
+GET http://localhost:3000/room/rooms
 Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsIl9pZCI6IjY0MDhiMjc1ODYyM2FlYTYwNzI1NTViNyIsImlhdCI6MTY3ODcwODQ5MH0.-rrNGSay57PmYYuFdFd2rEnybjeh3bewANMlZMbdRK4
 
 ### update room
@@ -28,3 +28,16 @@ Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3Mi
     "adult": 2,
     "capacity": 3
 }
+
+### book room
+POST http://localhost:3000/room/book-room
+Content-Type: application/json
+Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsIl9pZCI6IjY0MDhiMjc1ODYyM2FlYTYwNzI1NTViNyIsImlhdCI6MTY3ODcwODQ5MH0.-rrNGSay57PmYYuFdFd2rEnybjeh3bewANMlZMbdRK4
+
+{
+    "roomId": "640f161f7158a4f54e4c8555"
+}
+
+### remove room
+DELETE http://localhost:3000/room/remove-room/640f161f7158a4f54e4c8555
+Authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsIl9pZCI6IjY0MDhiMjc1ODYyM2FlYTYwNzI1NTViNyIsImlhdCI6MTY3ODcwODQ5MH0.-rrNGSay57PmYYuFdFd2rEnybjeh3bewANMlZMbdRK4

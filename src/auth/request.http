@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ### forget password
-GET http://localhost:3000/auth//forget-password/olanrewaju@gmail.com
+GET http://localhost:3000/auth/forget-password/olanrewaju@gmail.com
 
 ### reset password
 POST http://localhost:3000/auth//reset-password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbEFkZHJlc3MiOiJvbGFucmV3YWp1QGdtYWlsLmNvbSIsImlhdCI6MTY3ODcwODQyNX0.zr0GEHB7INolbr31cipBeFFW3adM_XcsXLz63IKNUWY

@@ -11,7 +11,7 @@ import { userGuard } from "./guard";
 import { RoomRouter } from "./room/room-controller";
 import { UserRouter } from "./user/user-controller";
 dotenv.config({ path: `.env.${process.env.NODE_ENV!}` });
-
+console.log(process.env.NODE_ENV);
 const app = express();
 app.use(express.json());
 app.use("/auth", AuthRouter);
@@ -42,6 +42,7 @@ const errorHandler: ErrorRequestHandler = function (
 app.use(errorHandler);
 
 const port = process.env.PORT || 3000;
-app.listen(port, function () {
-  mongoose.connect(process.env.MONGODB_URI!);
+app.listen(port, async function () {
+  await mongoose.connect(process.env.MONGODB_URI!);
+  console.info("LISTENING...");
 });

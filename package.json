@@ -4,8 +4,10 @@
   "description": "Daniel and Mathias final year project.",
   "main": "index.ts",
   "scripts": {
-    "start": "cross-env NODE_ENV=development nodemon ./dist/index.js",
-    "tsw": "tsc --watch"
+    "dev": "cross-env NODE_ENV=development nodemon ./dist/index.js",
+    "tsw": "tsc --watch",
+    "ts": "tsc",
+    "start": "cross-env NODE_ENV=development tsc && cross-env NODE_ENV=development node ./dist/index.js"
   },
   "author": "Olanrewaju Yusuf",
   "license": "ISC",

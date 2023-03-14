@@ -13,7 +13,7 @@ $ npm run dev
 # TypeScript compilation in watch mode (use in development mode)
 $ npm run tsw
 
-# TypeSript compilation (use to compile before going into production)
+# TypeSript compilation (use to compile ts files into ./dist)
 $ npm run ts
 
 # production
